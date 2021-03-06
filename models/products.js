@@ -63,6 +63,10 @@ const dbSchema = new Schema({
     type: String,
     require: true,
   },
+  publish: {
+    type: Boolean,
+    require: true,
+  },
 });
 
 const Product = mongoose.model("molior", dbSchema);
