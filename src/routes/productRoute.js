@@ -22,6 +22,7 @@ postRoute
 			file: req.body.file,
 			title: req.body.title,
 			publish: req.body.publish,
+			images: req.body.images,
 		});
 		product
 			.save()

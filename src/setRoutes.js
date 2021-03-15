@@ -5,7 +5,7 @@ const productRoute = require("./routes/productRoute");
 const offerRoute = require("./routes/offerRoute");
 const setRoutes = (server) => {
 	server.use("/", (req, res, next) => {
-		console.log(req.url);
+		console.log(req.url, "req.body:", req.body);
 		next();
 	});
 	server.use("/", passportRoute);
