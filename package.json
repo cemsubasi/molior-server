@@ -2,9 +2,10 @@
 	"name": "server",
 	"version": "1.0.0",
 	"description": "",
-	"main": "index.js",
+	"main": "src/index.js",
 	"scripts": {
-		"start": "nodemon src/server.js",
+		"start": "node src/index.js",
+		"dev": "nodemon src/index.js",
 		"test": "echo \"Error: no test specified\" && exit 1"
 	},
 	"keywords": [],
@@ -16,13 +17,13 @@
 		"cors": "^2.8.5",
 		"express": "^4.17.1",
 		"express-session": "^1.17.1",
-		"fs": "0.0.1-security",
-		"https": "^1.0.0",
 		"ip": "^1.1.5",
 		"mongoose": "^5.11.12",
 		"nodemailer": "^6.4.17",
-		"nodemon": "^2.0.7",
 		"passport": "^0.4.1",
 		"passport-local": "^1.0.0"
+	},
+	"devDependencies": {
+		"nodemon": "^2.0.7"
 	}
 }

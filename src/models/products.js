@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
 
-const dbSchema = new Schema({
+const productSchema = new mongoose.Schema({
 	id: {
 		type: Number,
 		require: true,
@@ -24,6 +23,10 @@ const dbSchema = new Schema({
 		require: true,
 	},
 	price: {
+		type: Number,
+		require: true,
+	},
+	totalPrice: {
 		type: Number,
 		require: true,
 	},
@@ -51,14 +54,6 @@ const dbSchema = new Schema({
 		type: String,
 		require: true,
 	},
-	data_url: {
-		type: String,
-		require: true,
-	},
-	file: {
-		type: Object,
-		require: true,
-	},
 	title: {
 		type: String,
 		require: true,
@@ -73,5 +68,4 @@ const dbSchema = new Schema({
 	},
 });
 
-const Product = mongoose.model("molior", dbSchema);
-module.exports = Product;
+module.exports = mongoose.model("products", productSchema);

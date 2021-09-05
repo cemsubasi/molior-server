@@ -1,8 +1,8 @@
 const passportRoute = require("./routes/passportRoute");
-const { INIT_URL, POST_URL, PHOTO_URL } = require("./data.js");
+const { INIT_URL, PRODUCTION_URL, ORDER_URL } = require("./config");
 const initRoute = require("./routes/initRoute");
 const productRoute = require("./routes/productRoute");
-const offerRoute = require("./routes/offerRoute");
+const orderRoute = require("./routes/orderRoute");
 const setRoutes = (server) => {
 	server.use("/", (req, res, next) => {
 		console.log(req.url, "req.body:", req.body);
@@ -10,8 +10,8 @@ const setRoutes = (server) => {
 	});
 	server.use("/", passportRoute);
 	server.use(INIT_URL, initRoute);
-	server.use(POST_URL, productRoute);
-	server.use("/offer", offerRoute);
+	server.use(PRODUCTION_URL, productRoute);
+	server.use(ORDER_URL, orderRoute);
 
 	server.use((req, res, next) => {
 		res.status(403).send("not found!");

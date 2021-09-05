@@ -1,27 +1,28 @@
-const express = require("express");
+const initRouter = require("express").Router();
 const Product = require("../models/products");
-const mySchema = require("../models/customers");
-const initRoute = express.Router();
+const Customer = require("../models/customers");
 const ip = require("ip");
 
-initRoute.get("/", (req, res) => {
-	mySchema.findOne({ ip: ip.address() }).then((result) => {
-		if (!result) {
-			const schema = new mySchema({
-				ip: ip.address(),
-				date: new Date(),
-			})
-				.save()
-				.then((res) => console.log("new customer saved" + res))
-				.catch((err) => console.log("customer model save error", err));
-		}
-	});
-
+initRouter.get("/", (req, res) => {
 	Product.find()
 		.then((result) => {
-			res.status(200).send(result);
+			Customer.findOne({ ip: ip.address() })
+				.then((registry) => {
+					if (!registry) {
+						const customer = new Customer({
+							ip: ip.address(),
+							date: new Date(),
+						})
+							.save()
+							.then((res) => console.log("new customer saved", res))
+							.catch((err) => console.log("customer model save error", err));
+					}
+				})
+				.catch(console.log);
+
+			if (result) res.status(200).send(result);
 		})
 		.catch((err) => res.status(404).send(err));
 });
 
-module.exports = initRoute;
+module.exports = initRouter;

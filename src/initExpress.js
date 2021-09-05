@@ -1,47 +1,22 @@
 const express = require("express");
-const http = require('http')
-// const https = require('https')
 const bodyParser = require("body-parser");
-// const fs = require('fs')
 const cookieParser = require("cookie-parser");
 const session = require("express-session");
-const cors = require('cors')
-const mongoose = require("mongoose");
-const { DB_URL, HTTPPORT, HTTPSPORT } = require("./data.js");
+const cors = require("cors");
 
-mongoose
-  .connect(process.env.MONGODB_URI || DB_URL, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useFindAndModify: false,
-    useCreateIndex: true,
-  })
-  .then(() => console.log("Connected to mongo"))
-  .catch((err) => console.log(err));
-
-// const options = {
-// 	    key: fs.readFileSync('./ssl/private.key.pem'),
-// 	    cert: fs.readFileSync('./ssl/domain.cert.pem'),
-// };
-
+const { DB_CONNECT, HTTPPORT, SESSION_OPT, CORS_OPT } = require("./config");
 
 const initExpress = () => {
-  const server = express();
+	const server = express();
 
-  server.use(express.json({ limit: "50mb" }));
-  server.use(bodyParser.json());
-  server.use(cookieParser());
-	server.use(cors());
-  server.use(
-    session({
-      secret: "clyde",
-      resave: true,
-      saveUninitialized: true,
-    })
-  );
+	server.use(express.json({ limit: "50mb" }));
+	server.use(bodyParser.json());
+	server.use(cookieParser());
+	server.use(cors(CORS_OPT));
+	server.use(session(SESSION_OPT));
 
-	http.createServer(server).listen(process.env.PORT || HTTPPORT);
-	// https.createServer({options}, server).listen(process.env.PORT || HTTPSPORT);
-  return server;
+	server.listen(HTTPPORT, DB_CONNECT);
+
+	return server;
 };
 module.exports = initExpress;
