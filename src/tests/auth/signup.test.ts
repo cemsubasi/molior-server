@@ -1,12 +1,17 @@
-const request = require('supertest');
-const jwt = require('jsonwebtoken');
-const initExpress = require('../../initExpress');
-const User = require('../../models/user.model');
-const { SECRET } = require('../../config');
+import request from 'supertest';
+import jwt from 'jsonwebtoken';
+import initExpress from '../../initExpress';
+import User from '../../models/user.model';
+import { SECRET } from '../../config';
 
 const server = initExpress();
 
-const credentials = {
+interface IUser {
+  username: string;
+  password: string;
+}
+
+const credentials: IUser = {
   username: 'cesdjkhasfil',
   password: '123123',
 };
@@ -51,17 +56,17 @@ describe('User signup', () => {
   it('returns 400 BAD_REQUEST if username is empty', async () => {
     const response = await postSignup({
       password: '12345ajksfgkhf1789gf81b2f891by290129bfvb1927b271bv',
-    });
+    } as IUser);
     expect(response.status).toBe(400);
   });
   it('returns 400 BAD_REQUEST if password is empty', async () => {
     const response = await postSignup({
       username: 'cemilcem',
-    });
+    } as IUser);
     expect(response.status).toBe(400);
   });
   it('returns 400 BAD_REQUEST if password and username are empty', async () => {
-    const response = await postSignup({});
+    const response = await postSignup({} as IUser);
     expect(response.status).toBe(400);
   });
 });

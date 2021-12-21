@@ -1,18 +1,18 @@
-const nodemailer = require("nodemailer");
-const { MAILFROM, MAILTO, PASSWORD } = require("../data");
+import nodemailer from "nodemailer";
+import { MAIL_FROM, MAIL_TO, MAIL_PASSWORD } from "../config";
 
 const mailer = (arg) => {
   var transporter = nodemailer.createTransport({
     service: "gmail",
     auth: {
-      user: MAILFROM,
-      pass: PASSWORD,
+      user: MAIL_FROM,
+      pass: MAIL_PASSWORD,
     },
   });
 
   var mailOptions = {
-    from: MAILFROM,
-    to: MAILTO,
+    from: MAIL_FROM,
+    to: MAIL_TO,
     subject: "Comment",
     text: arg,
   };
@@ -26,4 +26,4 @@ const mailer = (arg) => {
   });
 };
 
-module.exports = mailer;
+export default mailer;

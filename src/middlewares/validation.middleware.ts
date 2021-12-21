@@ -1,6 +1,7 @@
-const validator = require('../validators/auth.validator');
+import { Request, Response, NextFunction } from 'express';
+import validator from '../validators/auth.validator';
 
-const login = (req, res, next) => {
+const login = (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
   const { error } = validator.validate({
     username,
@@ -9,7 +10,7 @@ const login = (req, res, next) => {
   return error ? res.status(400).send(error) : next();
 };
 
-const signup = (req, res, next) => {
+const signup = (req: Request, res: Response, next: NextFunction) => {
   const { username, password } = req.body;
   const { error } = validator.validate({
     username,
@@ -18,7 +19,4 @@ const signup = (req, res, next) => {
   return error ? res.status(400).send(error) : next();
 };
 
-module.exports = {
-  login,
-  signup,
-};
+export { login, signup };

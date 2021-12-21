@@ -1,10 +1,14 @@
-const Product = require('../models/product.model');
-const Order = require('../models/order.model');
-const winston = require('../loggers/response.logger');
+import { Request, Response } from 'express';
+
+import Product from '../models/product.model';
+import Order from '../models/order.model';
+import winston from '../loggers/response.logger';
+
+import IProduct from '../interfaces/model/product';
 
 const logger = winston('order');
 
-const create = async (req, res) => {
+const create = async (req: Request, res: Response) => {
   const {
     orderId,
     name,
@@ -17,10 +21,10 @@ const create = async (req, res) => {
     zip,
     terms,
   } = req.body.credentials;
-  const { cart } = req.body;
+  const cart: IProduct[] = req.body.cart;
 
   try {
-    await Order().create({
+    await Order.create({
       orderId,
       name,
       surname,
@@ -58,7 +62,7 @@ const create = async (req, res) => {
   }
 };
 
-const find = async (req, res) => {
+const find = async (req: Request, res: Response) => {
   try {
     const orders = await Order.find();
     return res.status(200).send(orders);
@@ -68,7 +72,7 @@ const find = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
+const update = async (req: Request, res: Response) => {
   const { orderId, arg, cartIndex } = req.body;
   try {
     const order = await Order.findOneAndUpdate(
@@ -90,8 +94,4 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = {
-  create,
-  find,
-  update,
-};
+export { create, find, update };

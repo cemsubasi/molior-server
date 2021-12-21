@@ -1,12 +1,16 @@
-const request = require('supertest');
-const jwt = require('jsonwebtoken');
-const initExpress = require('../../initExpress');
-const User = require('../../models/user.model');
-const { SECRET } = require('../../config');
+import request from 'supertest';
+import jwt from 'jsonwebtoken';
+import initExpress from '../../initExpress';
+import User from '../../models/user.model';
+import { SECRET } from '../../config';
 
 const server = initExpress();
 
-const credentials = {
+interface IUser {
+  username: string;
+  password: string;
+}
+const credentials: IUser = {
   username: 'ceil',
   password: '123123',
 };
@@ -35,15 +39,15 @@ describe('User login', () => {
       .expect(200);
   });
   it('returns 400 BAD_REQUEST if username is empty', async () => {
-    const response = await postLogin({ password: '123456' });
+    const response = await postLogin({ password: '123456' } as IUser);
     expect(response.status).toBe(400);
   });
   it('returns 400 BAD_REQUEST if password is empty', async () => {
-    const response = await postLogin({ username: 'cemil' });
+    const response = await postLogin({ username: 'cemil' } as IUser);
     expect(response.status).toBe(400);
   });
   it('returns 400 BAD_REQUEST if username and password are empty', async () => {
-    const response = await postLogin({});
+    const response = await postLogin({} as IUser);
     expect(response.status).toBe(400);
   });
   it('returns 400 BAD_REQUEST if username less than 4 char', async () => {

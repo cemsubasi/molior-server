@@ -1,11 +1,13 @@
-const ip = require('ip');
-const Product = require('../models/product.model');
-const Customer = require('../models/customer.model');
+import { Request, Response } from 'express';
 
-const winston = require('../loggers/response.logger');
+/* import ip from 'ip'; */
+import Product from '../models/product.model';
+import Customer from '../models/customer.model';
+import winston from '../loggers/response.logger';
+
 const logger = winston('product');
 
-const find = async (req, res) => {
+const find = async (req: Request, res: Response) => {
   try {
     const products = await Product.find();
     return res.status(200).send(products);
@@ -23,7 +25,7 @@ const find = async (req, res) => {
 //         console.log('new customer saved', newCustomer)
 // }
 
-const create = async (req, res) => {
+const create = async (req: Request, res: Response) => {
   const {
     id,
     productURL,
@@ -68,7 +70,7 @@ const create = async (req, res) => {
   }
 };
 
-const remove = async (req, res) => {
+const remove = async (req: Request, res: Response) => {
   const { productURL } = req.body;
   try {
     const product = await Product.findOneAndRemove({
@@ -81,7 +83,7 @@ const remove = async (req, res) => {
   }
 };
 
-const updateStatus = async (req, res) => {
+const updateStatus = async (req: Request, res: Response) => {
   const { productURL, publish } = req.body;
   try {
     const product = await Product.findOneAndUpdate({ productURL }, { publish });
@@ -92,7 +94,7 @@ const updateStatus = async (req, res) => {
   }
 };
 
-const increaseStock = async (req, res) => {
+const increaseStock = async (req: Request, res: Response) => {
   const { productURL, count } = req.body;
   try {
     const product = await Product.findOneAndUpdate(
@@ -106,7 +108,7 @@ const increaseStock = async (req, res) => {
   }
 };
 
-const update = async (req, res) => {
+const update = async (req: Request, res: Response) => {
   const {
     id,
     productHeader,
@@ -143,11 +145,4 @@ const update = async (req, res) => {
   }
 };
 
-module.exports = {
-  create,
-  find,
-  remove,
-  update,
-  updateStatus,
-  increaseStock,
-};
+export { create, find, remove, update, updateStatus, increaseStock };

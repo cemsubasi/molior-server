@@ -1,4 +1,5 @@
 node_modules/
-src/config.js
 src/logs/
+.env
 .env.json
+coverage/

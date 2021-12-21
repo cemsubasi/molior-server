@@ -1,11 +1,13 @@
-const jwt = require('jsonwebtoken');
-const User = require('../models/user.model');
-const winston = require('../loggers/response.logger');
-const { SECRET } = require('../config');
+import { Request, Response } from 'express';
+import { IUser } from '../index.d';
+import jwt from 'jsonwebtoken';
+import User from '../models/user.model';
+import winston from '../loggers/response.logger';
+import { SECRET } from '../config';
 
 const logger = winston('auth');
 
-const signup = async (req, res) => {
+const signup = async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
   try {
@@ -21,8 +23,8 @@ const signup = async (req, res) => {
   }
 };
 
-const login = async (req, res) => {
-  if (req.session?.user?._id) return res.sendStatus(400);
+const login = async (req: Request, res: Response) => {
+  if (req?.session?.user?._id) return res.sendStatus(400);
   const { username, password } = req.body;
 
   try {
@@ -34,8 +36,8 @@ const login = async (req, res) => {
       .select('_id username')
       .lean();
 
-    const sessionToken = jwt.sign(user, SECRET);
-    req.session.user = user;
+    const sessionToken = jwt.sign(user as object, SECRET);
+    req.session.user = user as IUser;
 
     return res
       .cookie('auth-token', sessionToken, {
@@ -51,16 +53,12 @@ const login = async (req, res) => {
   }
 };
 
-const logout = (req, res) => {
-  if (req.session?.user?._id) {
+const logout = (req: Request, res: Response) => {
+  if (req?.session?.user?._id) {
     delete req.session.user;
     return res.clearCookie('auth-token').sendStatus(200);
   }
   return res.sendStatus(400);
 };
 
-module.exports = {
-  signup,
-  login,
-  logout,
-};
+export { signup, login, logout };

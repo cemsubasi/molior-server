@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
-const middleware = require('../middlewares/schema.middleware');
+import mongoose, { Schema } from 'mongoose';
+import IProduct from '../interfaces/model/product';
+import middleware from '../middlewares/schema.middleware';
 
-const productSchema = new mongoose.Schema(
+const productSchema: Schema = new mongoose.Schema(
   {
     id: {
       type: Number,
@@ -74,4 +75,4 @@ const productSchema = new mongoose.Schema(
 
 middleware(productSchema, 'product');
 
-module.exports = mongoose.model('products', productSchema);
+export default mongoose.model < IProduct > ('products', productSchema);

@@ -1,12 +1,14 @@
-const productRouter = require('express').Router();
-const {
+import express from 'express';
+import {
   create,
   find,
   remove,
   increaseStock,
   update,
   updateStatus,
-} = require('../controllers/product.controller');
+} from '../controllers/product.controller';
+
+const productRouter = express.Router();
 
 productRouter
   .route('/')
@@ -18,4 +20,4 @@ productRouter
 productRouter.route('/stock').put(increaseStock);
 productRouter.route('/edit').put(update);
 
-module.exports = productRouter;
+export default productRouter;

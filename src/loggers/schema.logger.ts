@@ -1,16 +1,16 @@
-const winston = require('winston');
+import winston from 'winston';
 const { timestamp, combine, json } = winston.format;
 
 const jsonWithTimestamp = combine(timestamp(), json());
 
-const logger = (type) =>
+const logger = (type: string) =>
   winston.createLogger({
     level: 'info',
     format: jsonWithTimestamp,
-    defaultMeta: { service: `${type}-request-service` },
+    defaultMeta: { service: `${type}-model-service` },
     transports: [
       new winston.transports.File({
-        filename: `logs/${type}/request/combined.log`,
+        filename: `src/logs/${type}/model/combined.log`,
       }),
     ],
   });
@@ -23,4 +23,4 @@ const logger = (type) =>
 //   );
 // }
 
-module.exports = logger;
+export default logger;

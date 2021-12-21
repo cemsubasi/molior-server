@@ -1,6 +1,7 @@
-const winston = require('../loggers/schema.logger');
+import { Schema } from 'mongoose';
+import winston from '../loggers/schema.logger';
 
-module.exports = (schema, type) => {
+export default (schema: Schema, type: string) => {
   const logger = winston(type);
 
   schema.post('save', (doc) => logger.info(doc));
