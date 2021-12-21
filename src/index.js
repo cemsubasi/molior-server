@@ -1,7 +1,8 @@
-const express = require("./initExpress");
-const initPassport = require("./initPassport");
-const setRoutes = require("./setRoutes");
+const initExpress = require('./initExpress');
 
-const server = express();
-initPassport(server);
-setRoutes(server);
+const { DB_CONNECT, PORT } = require('./config');
+
+const server = initExpress();
+
+server.listen(PORT, DB_CONNECT);
+

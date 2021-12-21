@@ -1,22 +1,24 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const cookieParser = require("cookie-parser");
-const session = require("express-session");
-const cors = require("cors");
+const express = require('express');
+const cookieParser = require('cookie-parser');
+const session = require('express-session');
+const cors = require('cors');
+const helmet = require('helmet');
+const compression = require('compression');
 
-const { DB_CONNECT, HTTPPORT, SESSION_OPT, CORS_OPT } = require("./config");
+const initRoutes = require('./initRoutes');
+const { SESSION_OPT, CORS_OPT } = require('./config');
 
 const initExpress = () => {
-	const server = express();
+  const server = express();
+  server.use(express.json({ limit: '50mb' }));
+  server.use(cookieParser());
+  server.use(cors(CORS_OPT));
+  server.use(session(SESSION_OPT));
+  server.use(helmet());
+  server.use(compression());
 
-	server.use(express.json({ limit: "50mb" }));
-	server.use(bodyParser.json());
-	server.use(cookieParser());
-	server.use(cors(CORS_OPT));
-	server.use(session(SESSION_OPT));
+  initRoutes(server);
 
-	server.listen(HTTPPORT, DB_CONNECT);
-
-	return server;
+  return server;
 };
 module.exports = initExpress;
