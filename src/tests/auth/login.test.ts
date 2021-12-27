@@ -3,28 +3,22 @@ import jwt from 'jsonwebtoken';
 import initExpress from '../../initExpress';
 import User from '../../models/user.model';
 import { SECRET } from '../../config';
+import { loginCredentials, IUser } from '../constants';
 
 const server = initExpress();
 
-interface IUser {
-  username: string;
-  password: string;
-}
-const credentials: IUser = {
-  username: 'ceil',
-  password: '123123',
-};
-
 beforeAll(async () => {
   await User.create({
-    username: credentials.username,
-    password: jwt.sign(credentials.password, SECRET),
+    username: loginCredentials.username,
+    password: jwt.sign(loginCredentials.password, SECRET),
   });
 });
 
-afterAll(async () => User.findOneAndRemove({ username: credentials.username }));
+afterAll(async () =>
+  User.findOneAndRemove({ username: loginCredentials.username })
+);
 
-const postLogin = (user = credentials) =>
+const postLogin = (user = loginCredentials) =>
   request(server).post('/api/v1/auth/login').send(user);
 
 describe('User login', () => {
@@ -35,7 +29,10 @@ describe('User login', () => {
 
   it('returns 200 OK if auth-token is valid', async () => {
     await postLogin()
-      .set('set-cookie', `auth-token=${jwt.sign(credentials.password, SECRET)}`)
+      .set(
+        'set-cookie',
+        `auth-token=${jwt.sign(loginCredentials.password, SECRET)}`
+      )
       .expect(200);
   });
   it('returns 400 BAD_REQUEST if username is empty', async () => {

@@ -1,7 +1,11 @@
-import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+const env = require('../.conf.json');
+const mongoose = require('mongoose');
+/* import mongoose from 'mongoose'; */
+/* import env from '../.conf.json'; */
+/* const dotenv = require('dotenv').config(); */
+/* import dotenv from 'dotenv'; */
 
-dotenv.config();
+/* dotenv.config(); */
 
 const {
   PORT,
@@ -13,7 +17,7 @@ const {
   MAIL_FROM,
   MAIL_TO,
   MAIL_PASSWORD,
-} = process.env;
+} = env;
 
 const CORS_OPT = { credentials: true, origin: ORIGIN };
 const SESSION_OPT = {
@@ -23,10 +27,10 @@ const SESSION_OPT = {
 };
 
 const DB_URL = `mongodb+srv://${DB_NAME}:${DB_PASSWORD}@cluster0.zoi2e.mongodb.net/${DB_COLLECTION}?retryWrites=true&w=majority`;
-const DB_OPT = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-};
+/* const DB_OPT = { */
+/*   useNewUrlParser: true, */
+/*   useUnifiedTopology: true, */
+/* }; */
 const DB_CONNECT = mongoose
   .connect(DB_URL)
   .then(() => {

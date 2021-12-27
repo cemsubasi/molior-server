@@ -3,21 +3,16 @@ import {
   create,
   find,
   remove,
-  increaseStock,
+  updateStock,
   update,
-  updateStatus,
+  publish,
 } from '../controllers/product.controller';
 
 const productRouter = express.Router();
 
-productRouter
-  .route('/')
-  .get(find)
-  .post(create)
-  .delete(remove)
-  .put(updateStatus);
+productRouter.route('/').get(find).post(create).delete(remove).patch(publish);
 
-productRouter.route('/stock').put(increaseStock);
-productRouter.route('/edit').put(update);
+productRouter.route('/stock').patch(updateStock);
+productRouter.route('/update').put(update);
 
 export default productRouter;

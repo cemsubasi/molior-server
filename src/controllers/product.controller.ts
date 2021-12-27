@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 
-/* import ip from 'ip'; */
 import Product from '../models/product.model';
 import Customer from '../models/customer.model';
 import winston from '../loggers/response.logger';
@@ -16,14 +15,6 @@ const find = async (req: Request, res: Response) => {
     return res.status(404).send(err);
   }
 };
-// const customer = await Customer.findOne({ ip: ip.address() }).catch(console.log);
-//     if (!customer) {
-//       const newCustomer = await Customer.create({
-//         ip: ip.address(),
-//         date: new Date(),
-//       })
-//         console.log('new customer saved', newCustomer)
-// }
 
 const create = async (req: Request, res: Response) => {
   const {
@@ -83,10 +74,16 @@ const remove = async (req: Request, res: Response) => {
   }
 };
 
-const updateStatus = async (req: Request, res: Response) => {
+const publish = async (req: Request, res: Response) => {
   const { productURL, publish } = req.body;
   try {
-    const product = await Product.findOneAndUpdate({ productURL }, { publish });
+    const product = await Product.findOneAndUpdate(
+      { productURL },
+      { publish },
+      { new: true }
+    )
+      .select('productURL')
+      .lean();
     return res.status(202).send(product);
   } catch (err) {
     logger.error(err);
@@ -94,13 +91,14 @@ const updateStatus = async (req: Request, res: Response) => {
   }
 };
 
-const increaseStock = async (req: Request, res: Response) => {
-  const { productURL, count } = req.body;
+const updateStock = async (req: Request, res: Response) => {
+  const { increase } = req.query;
+  const { productURL } = req.body;
+  const operation = increase ? { $inc: { stock: 1 } } : { $inc: { stock: -1 } };
   try {
-    const product = await Product.findOneAndUpdate(
-      { productURL },
-      { $inc: { stock: count } }
-    );
+    const product = await Product.findOneAndUpdate({ productURL }, operation, {
+      new: true,
+    });
     return res.status(202).send(product);
   } catch (err) {
     logger.error(err);
@@ -136,7 +134,8 @@ const update = async (req: Request, res: Response) => {
         category,
         collect,
         stock,
-      }
+      },
+      { new: true }
     );
     return res.status(202).send(product);
   } catch (err) {
@@ -145,4 +144,4 @@ const update = async (req: Request, res: Response) => {
   }
 };
 
-export { create, find, remove, update, updateStatus, increaseStock };
+export { create, find, remove, update, publish, updateStock };

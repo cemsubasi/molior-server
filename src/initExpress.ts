@@ -10,9 +10,9 @@ import { SESSION_OPT, CORS_OPT } from './config';
 
 const initServer = () => {
   const server = express();
+  server.use(cors(CORS_OPT));
   server.use(express.json({ limit: '50mb' }));
   server.use(cookieParser());
-  server.use(cors(CORS_OPT));
   server.use(session(SESSION_OPT));
   server.use(helmet());
   server.use(compression());

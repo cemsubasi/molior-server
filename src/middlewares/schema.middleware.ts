@@ -1,5 +1,6 @@
 import { Schema } from 'mongoose';
 import winston from '../loggers/schema.logger';
+import IUser from '../interfaces/model/user';
 
 export default (schema: Schema, type: string) => {
   const logger = winston(type);

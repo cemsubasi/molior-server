@@ -3,24 +3,16 @@ import jwt from 'jsonwebtoken';
 import initExpress from '../../initExpress';
 import User from '../../models/user.model';
 import { SECRET } from '../../config';
+import { signupCredentials, IUser } from '../constants';
 
 const server = initExpress();
 
-interface IUser {
-  username: string;
-  password: string;
-}
-
-const credentials: IUser = {
-  username: 'cesdjkhasfil',
-  password: '123123',
-};
-
 afterAll(
-  async () => await User.findOneAndRemove({ username: credentials.username })
+  async () =>
+    await User.findOneAndRemove({ username: signupCredentials.username })
 );
 
-const postSignup = (user = credentials) =>
+const postSignup = (user = signupCredentials) =>
   request(server).post('/api/v1/auth/signup').send(user);
 
 describe('User signup', () => {
