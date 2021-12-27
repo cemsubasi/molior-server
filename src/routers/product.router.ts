@@ -7,12 +7,17 @@ import {
   update,
   publish,
 } from '../controllers/product.controller';
+import authorization from '../middlewares/authorization.middleware';
 
 const productRouter = express.Router();
 
-productRouter.route('/').get(find).post(create).delete(remove).patch(publish);
-
-productRouter.route('/stock').patch(updateStock);
-productRouter.route('/update').put(update);
+productRouter
+  .route('/')
+  .get(find)
+  .post(authorization, create)
+  .delete(authorization, remove)
+  .patch(authorization, publish);
+productRouter.route('/stock').patch(authorization, updateStock);
+productRouter.route('/update').put(authorization, update);
 
 export default productRouter;

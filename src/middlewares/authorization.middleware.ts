@@ -10,6 +10,7 @@ const authorization = async (
   next: NextFunction
 ) => {
   try {
+    console.log('auth middleware');
     if (req.session?.user?._id) return next();
     const decoded = jwt.verify(req.cookies['auth-token'], SECRET);
     const user = await User.findOne({ _id: (<any>decoded)._id })
